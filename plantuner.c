@@ -224,7 +224,7 @@ execPlantuner(PlannerInfo *root, Oid relationObjectId, bool inhparent, RelOptInf
 {
 	Relation	relation;
 
-	relation = heap_open(relationObjectId, NoLock);
+	relation = table_open(relationObjectId, NoLock);
 	if (relation->rd_rel->relkind == RELKIND_RELATION)
 	{
 		if (fix_empty_table && RelationGetNumberOfBlocks(relation) == 0)
@@ -239,7 +239,7 @@ execPlantuner(PlannerInfo *root, Oid relationObjectId, bool inhparent, RelOptInf
 
 		indexFilter(root, relationObjectId, inhparent, rel);
 	}
-	heap_close(relation, NoLock);
+	table_close(relation, NoLock);
 
 	/*
 	 * Call next hook if it exists
